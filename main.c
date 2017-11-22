@@ -21,15 +21,27 @@ char ** parse_args( char * line){
 
 int main(){
   char line[100];
-  printf("Enter command: ");
-  fgets(line, sizeof(line), stdin);
-  line[strlen(line)-1] ='\0';
 
+  while(1){
+    printf("Enter command: ");
+    fgets(line, sizeof(line), stdin);
+    line[strlen(line)-1] ='\0';
+    
+    if(!fork()){
+      char ** args = parse_args(line);
+      execvp(args[0], args);
+    }
+    else{
+      int status;
+      wait(&status);
+
+    }
+  }
+
+
+
+   return 0;
   
-  char ** args = parse_args(line);
-  execvp(args[0], args);
-  return 0;
-
 
 
 

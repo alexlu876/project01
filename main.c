@@ -12,9 +12,7 @@ char ** parse_args( char * line){
 
   while(line){
     args[i] = line;
-    // printf("given line: %s\n", line);
     strsep(&line, " ");
-    // printf("after strsep new line: %s\n", line);
     i++;
   }
   return args;
@@ -22,6 +20,7 @@ char ** parse_args( char * line){
 
 
 void fork_and_run(char ** args){
+  
   if(!fork()){
     execvp(args[0], args);
 
@@ -33,6 +32,21 @@ void fork_and_run(char ** args){
   }
 }
 
+void do_everything(char * line){
+  if(!line){
+    return;
+  }
+  char * first = strsep(&line, ";");
+  
+
+  
+  char ** args = parse_args(first);
+  fork_and_run(args);
+
+  do_everything(line);
+
+}
+
 int main(){
   char line[100];
 
@@ -40,20 +54,9 @@ int main(){
     printf("Enter command: ");
     fgets(line, sizeof(line), stdin);
     line[strlen(line)-1] ='\0';
-    char ** args = parse_args(line);
-    fork_and_run(args);
+    
+    do_everything(line);
 
-    /*
-    if(!fork()){
-      char ** args = parse_args(line);
-      execvp(args[0], args);
-    }
-    else{
-      int status;
-      wait(&status);
-
-    }
-    */
   }
 
 

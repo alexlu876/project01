@@ -4,6 +4,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <string.h>
+#include <sys/wait.h>
 
 char ** parse_args( char * line){
   char ** args = malloc(sizeof(char*) * 100);
@@ -19,6 +20,19 @@ char ** parse_args( char * line){
   return args;
 }
 
+
+void fork_and_run(char ** args){
+  if(!fork()){
+    execvp(args[0], args);
+
+
+  }
+  else{
+    int status;
+    wait(&status);
+  }
+}
+
 int main(){
   char line[100];
 
@@ -26,7 +40,10 @@ int main(){
     printf("Enter command: ");
     fgets(line, sizeof(line), stdin);
     line[strlen(line)-1] ='\0';
-    
+    char ** args = parse_args(line);
+    fork_and_run(args);
+
+    /*
     if(!fork()){
       char ** args = parse_args(line);
       execvp(args[0], args);
@@ -36,6 +53,7 @@ int main(){
       wait(&status);
 
     }
+    */
   }
 
 

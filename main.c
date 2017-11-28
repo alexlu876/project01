@@ -7,6 +7,8 @@
 #include <sys/wait.h>
 
 char ** parse_args( char * line){
+
+  
   char ** args = malloc(sizeof(char*) * 100);
   int i = 0;
 
@@ -44,6 +46,14 @@ void do_everything(char * line){
   fork_and_run(args);
 
   do_everything(line);
+
+}
+
+
+void chop_spaces(char * line){
+  
+
+
 
 }
 

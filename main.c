@@ -37,6 +37,29 @@ void fork_and_run(char ** args){
   }
 }
 
+
+void pipes(char * first){
+  char * pre = strsep(&first, "|");
+  if(!first)
+    return;
+  /*
+  int r = 0;
+  int w = 1;
+
+  char * pipeup[2];
+  pipe(pipeup);
+  */
+  if(!fork()){ //child
+    int sout = dup(1);
+    
+  }
+  else{ //parent
+
+
+
+  }
+}
+
 void do_everything(char * line){
   if(!line){
     return;
@@ -49,14 +72,18 @@ void do_everything(char * line){
   if(line[strlen(line)-1] == ' '){
     line[strlen(line)-1] = '\0';
   }
-  
+
+
+  //line to be processed by bash
   char * first = strsep(&line, ";");
   
-
+  
   
   char ** args = parse_args(first);
   fork_and_run(args);
+  //end
 
+  
   do_everything(line);
 
 }

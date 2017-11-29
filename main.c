@@ -7,7 +7,10 @@
 #include <sys/wait.h>
 
 char ** parse_args( char * line){
+  if(line[strlen(line)-1] == ' '){
+    line[strlen(line)-1] = '\0';
 
+  }
   
   char ** args = malloc(sizeof(char*) * 100);
   int i = 0;
@@ -38,6 +41,15 @@ void do_everything(char * line){
   if(!line){
     return;
   }
+  
+  if(line[0] == ' '){
+    line++;
+  }
+
+  if(line[strlen(line)-1] == ' '){
+    line[strlen(line)-1] = '\0';
+  }
+  
   char * first = strsep(&line, ";");
   
 
@@ -49,13 +61,6 @@ void do_everything(char * line){
 
 }
 
-
-void chop_spaces(char * line){
-  
-
-
-
-}
 
 int main(){
   char line[100];

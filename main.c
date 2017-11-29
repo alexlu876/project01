@@ -51,7 +51,9 @@ void pipes(char * first){
   */
   if(!fork()){ //child
     int sout = dup(1);
+    int file_fd = open("pp", 0_WRONLY);
     
+      
   }
   else{ //parent
 

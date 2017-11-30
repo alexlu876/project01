@@ -5,6 +5,9 @@
 #include <signal.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <fcntl.h>
+
+void do_everything(char *);
 
 char ** parse_args( char * line){
   if(line[strlen(line)-1] == ' '){
@@ -38,10 +41,11 @@ void fork_and_run(char ** args){
 }
 
 
-void pipes(char * first){
+int pipes(char * first){
+  
   char * pre = strsep(&first, "|");
   if(!first)
-    return;
+    return 0;
   /*
   int r = 0;
   int w = 1;
@@ -49,17 +53,32 @@ void pipes(char * first){
   char * pipeup[2];
   pipe(pipeup);
   */
-  if(!fork()){ //child
-    int sout = dup(1);
-    int file_fd = open("pp", 0_WRONLY);
-    
-      
+  int sout = dup(1);
+  int sin = dup(0);
+  int fp = open("cc", O_WRONLY);
+  
+  int child1 = fork();
+  int child2 = 0;
+  if(getpid() == child1){
+    child2 = fork();
   }
-  else{ //parent
-
-
-
+  
+  if(getpid() == child2){ //child1
+    dup2(fp, 1);
+    do_everything(pre);
   }
+  else if(getpid() == child1){
+    int status;
+    wait(&status);
+    dup2(fp, 0);
+    do_everything(first);
+  }
+  else{
+   dup2(sout, 1); 
+   dup2(sin, 0);
+   return 1;
+  }
+  
 }
 
 void do_everything(char * line){
@@ -78,11 +97,12 @@ void do_everything(char * line){
 
   //line to be processed by bash
   char * first = strsep(&line, ";");
+  if(!pipes(first)){
   
-  
-  
-  char ** args = parse_args(first);
-  fork_and_run(args);
+    
+    char ** args = parse_args(first);
+    fork_and_run(args);
+  }
   //end
 
   

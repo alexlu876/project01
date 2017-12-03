@@ -157,7 +157,7 @@ int main(){
   char line[100];
 
   while(1){
-    printf("Enter command: ");
+    printf("The Shell of Justice$ ");
     fgets(line, sizeof(line), stdin);
     line[strlen(line)-1] ='\0';   
     do_everything(line);

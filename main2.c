@@ -28,6 +28,39 @@ char ** parse_args( char * line){
 }
 
 
+void forkandreset(char ** args, int in, int out){
+   if(!fork()){
+    execvp(args[0], args);
+
+
+  }
+  else{
+  
+    int status;
+    wait(&status);
+
+    dup2(in, 0);
+    dup2(out, 1);
+  
+  }
+
+}
+
+
+void fork_and_runn(char ** args){
+  
+  if(!fork()){
+    execvp(args[0], args);
+
+
+  }
+  else{
+  
+    int status;
+    wait(&status);
+  
+  }
+}
 void fork_and_run(char ** args, int x, int y){
   
   if(!fork()){
@@ -38,13 +71,13 @@ void fork_and_run(char ** args, int x, int y){
   else{
   
     int status;
+    wait(&status);
     if (x!= 1){//change stdout back to 1
       dup2(x,1);
     }
     if (y!=0){//change stdin back to 0
       dup2(y,0);
     }
-    wait(&status);
   }
 }
 
@@ -89,10 +122,35 @@ void do_everything(char * line){
     fork_and_run(args, 1, y);
     
   }
+  //piping
+  else if(strchr(first, '|')!= NULL){
+    char * ff = strsep(&first, "|");
+    while (first[0] == ' '){
+      first++;
+    }
+    
+    
+    int in = dup(0);
+    int out = dup(1);
+    int fil = open("java",   O_WRONLY);
+    dup2(fil, 1);
+    char ** arg1 = parse_args(ff);
+    char ** arg2 = parse_args(first);
+    fork_and_runn(arg1);
+    
+    int fil2 = open("java",O_RDONLY);
+    dup2(fil2, 0);
+    close(fil);
+    dup2(out, 1);
+    fork_and_runn(arg2);
+    dup2(in, 0);
+    close(fil2);
+  }
   else{
     char ** args = parse_args(first);
     fork_and_run(args,1,0);  
     do_everything(line);
+    
   }  
 }
 int main(){

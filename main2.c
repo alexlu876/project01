@@ -28,7 +28,7 @@ char ** parse_args( char * line){
 }
 
 
-void forkandreset(char ** args, int in, int out){
+/*void forkandreset(char ** args, int in, int out){
    if(!fork()){
     execvp(args[0], args);
 
@@ -44,7 +44,7 @@ void forkandreset(char ** args, int in, int out){
   
   }
 
-}
+  }*/
 
 
 void fork_and_runn(char ** args){
@@ -93,6 +93,7 @@ void do_everything(char * line){
   while(line[strlen(line)-1] == ' '){
     line[strlen(line)-1] = '\0';
   }
+
   char * first = strsep(&line, ";");
   
   if (strchr(first,'>') != NULL){//redirect greater than
@@ -154,11 +155,14 @@ void do_everything(char * line){
 }
 int main(){
   char line[100];
-
+  
   while(1){
     printf("The Shell of Justice$ ");
     fgets(line, sizeof(line), stdin);
-    line[strlen(line)-1] ='\0';   
+    line[strlen(line)-1] ='\0';
+    if (strcmp(line, "exit")==0){
+      exit(1);
+    }
     do_everything(line);
 
   }

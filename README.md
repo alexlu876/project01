@@ -32,3 +32,8 @@ If there is a `;`, will recursively execute the commands separated by the `;`
 If there is a `>`, will redirect the stdout produced from what comes before the `>` to a created file with the name of what is after the `>`  
 If there is a `<`, will redirect the stdin from the file, which is named what comes after the `<` to either the command, which comes before the `<`, or to the shell program, main2.c, if nothing comes before the `<`  
 If there is a `|`, will create a pipe, which redirects the stdout of what comes before the `|` to the stdin of what comes after the `|`  
+/*======== int main() ==========  
+Prints out "The Shell of Justice$" after every execution of command  
+Exits program if `exit` is called
+If `cd <DIRECTORY>` is called, changes directory to <DIRECTORY>
+If the above two conditions aren't met, calls do_everything() to execute the command(s) called

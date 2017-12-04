@@ -163,8 +163,14 @@ int main(){
     if (strcmp(line, "exit")==0){
       exit(1);
     }
-    do_everything(line);
-
+    else if (strstr(line, "cd") != NULL){
+      char ** args = parse_args(line);
+      chdir(args[1]);
+    }
+    else{
+      do_everything(line);
+    }
+    
   }
    return 0;
   

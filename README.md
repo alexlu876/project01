@@ -21,7 +21,7 @@ Separates the string `line` by `' '` and returns an array of the individual stri
 /*======== void fork_and_runn() ==========  
 Input: char ** args
 Forks the current process, while the parent executes the command given in args, and the child waits for the parent to do so  
-/*======== char ** fork_and_run() ==========  
+/*======== void fork_and_run() ==========  
 Input: char ** args  
 int x  
 int y  

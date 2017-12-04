@@ -108,7 +108,6 @@ void do_everything(char * line){
     dup2(fd, 1);
     fork_and_run(args, x,0);   
   }
-  //< <FILE> doesn't work 
   else if (strchr(first,'<')!= NULL){//redirect less than
     char * function = strsep(&first, "<");
     char ** args = parse_args(function);

@@ -115,11 +115,9 @@ void do_everything(char * line){
     while (first[0] == ' '){
       first++;
     }
-    /* if (strcmp(args[0],"") == 0){
-      strcpy(args[0],"./a.out");
-      printf("%s\n", args[0]);
-     
-      }*/
+     if (strcmp(args[0],"") == 0){
+       return;
+     }
     int fd = open(first, O_RDONLY | O_CREAT, 0666);
     int y = dup(0);
     dup2(fd,0);
